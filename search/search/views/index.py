@@ -5,11 +5,12 @@ URLs include:
 /
 """
 import heapq
+import threading
 import time
 
 import flask
 import requests
-import threading
+
 import search
 
 
@@ -34,12 +35,14 @@ def show_index():
     index_urls = search.app.config["SEARCH_INDEX_SEGMENT_API_URLS"]
     search_results = []
     threads = []
-    for i, url in enumerate(index_urls):
+    for url in index_urls:
         thread = threading.Thread(target=search_index_segment,
                                   args=(query, weight, url, search_results))
         threads.append(thread)
         thread.start()
-    while threads[0].is_alive() and threads[1].is_alive() and threads[2].is_alive():
+    while threads[0].is_alive() \
+            or threads[1].is_alive() \
+            or threads[2].is_alive():
         time.sleep(0.1)
     connection = search.model.get_db()
     for search_result in heapq.merge(*search_results,
@@ -47,7 +50,7 @@ def show_index():
                                      reverse=True):
         cur = connection.execute(
             "SELECT * FROM Documents WHERE docid = ?",
-            (search_result["docid"], )
+            (search_result["docid"],)
         )
         document = cur.fetchone()
         if len(context["search_results"]) < 10:
