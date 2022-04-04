@@ -16,7 +16,7 @@
 set -Eeuo pipefail
 
 # Optional input directory argument
-PIPELINE_INPUT=example_input
+PIPELINE_INPUT=input
 if [ -n "${1-}" ]; then
   PIPELINE_INPUT="$1"
 fi
@@ -44,12 +44,27 @@ madoop \
   -mapper ./map1.py \
   -reducer ./reduce1.py
 
-## Job 2
-#madoop \
-#  -input output1 \
-#  -output output2 \
-#  -mapper ./map2.py \
-#  -reducer ./reduce2.py
+# Job 2
+madoop \
+  -input output1 \
+  -output output2 \
+  -mapper ./map2.py \
+  -reducer ./reduce2.py
+
+# Job 3
+madoop \
+  -input output2 \
+  -output output3 \
+  -mapper ./map3.py \
+  -reducer ./reduce3.py
+
+# Job 4
+madoop \
+  -input output3 \
+  -output output \
+  -mapper ./map4.py \
+  -reducer ./reduce4.py \
+  -numReduceTasks 3
 
 # REMINDER: don't forget to set -numReduceTasks in your last stage.  You'll
 # need this to generate the correct number of inverted index segments.

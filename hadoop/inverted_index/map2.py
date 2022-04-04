@@ -3,4 +3,5 @@
 import sys
 
 for row in sys.stdin:
-    doc_id = row.split()[2]
+    term, doc_id = row.split()
+    print(f"{term}\t{doc_id}")

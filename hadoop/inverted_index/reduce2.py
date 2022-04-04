@@ -1,19 +1,39 @@
 #!/usr/bin/env python3
-"""Reduce2."""
-import itertools
+"""Reduce 2."""
+import math
 import sys
+import itertools
+
+
+with open("total_document_count.txt") as file:
+    N = int(file.read())
 
 
 def reduce_one_group(key, group):
     """Reduce one group."""
-    group = list(group)
+    docs = []
+    last_id = -1
+    curr_count = 0
     for line in group:
-        print(line)
+        doc_id = line.split()[1]
+        if doc_id == last_id:
+            curr_count += 1
+        else:
+            if last_id != -1:
+                docs.append((last_id, str(curr_count)))
+            last_id = doc_id
+            curr_count = 1
+    if last_id != -1:
+        docs.append((last_id, str(curr_count)))
+    num_docs = len(docs)
+    idf = math.log10(N / num_docs)
+    for doc_id, tf in docs:
+        print(doc_id, key, idf, tf)
 
 
 def keyfunc(line):
     """Return the key from a TAB-delimited key-value pair."""
-    return line.split()[2]
+    return line.split()[0]
 
 
 def main():
