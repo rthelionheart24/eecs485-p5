@@ -1,3 +1,3 @@
-"""Insta485 REST API."""
+"""index REST API."""
 
-from index.api.main import startup
+from index.api.main import startup, service_list, hits
