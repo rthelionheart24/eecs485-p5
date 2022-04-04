@@ -15,7 +15,7 @@ start() {
     echo "Try: ./bin/indexdb create"
     exit 1
   else
-    echo "starting index server ..."
+    echo "starting search server ..."
     mkdir -p var/log
     rm -f var/log/search.log
     FLASK_APP=search flask run --host 0.0.0.0 --port 8000 &> var/log/search.log &
