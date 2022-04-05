@@ -1,0 +1,18 @@
+#!/bin/bash
+
+tar \
+  -cJvf submit.tar.xz \
+  --disable-copyfile \
+  --exclude '*__pycache__*' \
+  --exclude '*.out' \
+  --exclude '*.sql' \
+  --exclude '*.sqlite3' \
+  --exclude '*.jar' \
+  --exclude '*.egg-info' \
+  --exclude '*var*' \
+  --exclude '*tmp*' \
+  --exclude '*/part-*' \
+  bin \
+  hadoop/inverted_index/{map*.py,reduce*.py,pipeline.sh} \
+  index \
+  search
