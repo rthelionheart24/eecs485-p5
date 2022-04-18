@@ -64,4 +64,9 @@ case $1 in
   "status")
     status
     ;;
+    
+  "restart")
+    stop
+    start
+    ;;
 esac
